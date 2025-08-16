@@ -14,7 +14,7 @@ contract SimpleStorage {
     Person[] public listOfPeople;  // []
 
     // chelsea -> 232
-    mapping(string => uint256) public nameToFavoriteNumber;
+    mapping(bytes32 => uint256) public nameToFavoriteNumber;
 
 
 
@@ -29,7 +29,8 @@ contract SimpleStorage {
     // calldata, memory, storage 
     function addPerson(string memory _name, uint256 _favoriteNumber) public {
         listOfPeople.push(Person(_favoriteNumber, _name));
-        nameToFavoriteNumber[_name] = _favoriteNumber;
+        bytes32 nameHash = keccak256(abi.encodePacked(_name));
+        nameToFavoriteNumber[nameHash] = _favoriteNumber;
     }
 
     
