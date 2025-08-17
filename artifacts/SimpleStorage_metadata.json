@@ -50,9 +50,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
+						"internalType": "bytes32",
 						"name": "",
-						"type": "string"
+						"type": "bytes32"
 					}
 				],
 				"name": "nameToFavoriteNumber",
@@ -121,11 +121,11 @@
 	},
 	"sources": {
 		"SimpleStorage.sol": {
-			"keccak256": "0xb79657a7c0d96b51302786bd41cacaf5a36ae3cb6dda3edc66cd6d33ff467d24",
+			"keccak256": "0x68f8c7707d1e18c415dd0bd00d984beacc108e0ea9a06bb33058b7336ef9c20d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://42a55051e48f852035baa46d3e526a624767f5142b8877af2e0a9b47fce8f207",
-				"dweb:/ipfs/QmRzN7c5Yryhsh76V72nVqJ2wDx8gPfJSdhMKaEDrPDouM"
+				"bzz-raw://5d1e0819e04aa3c000c9b18635448139f2c59d1048c24717ea2ac432108a294a",
+				"dweb:/ipfs/QmPKNKkrQ8uDFXaoeEj2B1H4qmUNSXVvyhDS4Y7y8fXYJW"
 			]
 		}
 	},
