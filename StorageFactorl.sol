@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.30;
 
-import "./SimpleStorage.sol";
+import {SimpleStorage} from "./SimpleStorage.sol";
 
 contract SolidityFactory {
     // type visibility name
