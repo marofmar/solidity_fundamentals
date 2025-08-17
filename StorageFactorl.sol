@@ -18,12 +18,11 @@ contract SolidityFactory {
     function sfStore(uint256 _simpleStorageIndex, uint256 _newSimpleStorageNumber) public {
         // Address
         // ABI -- application binary interface
-        SimpleStorage mySimpleStorage = listOfSimpleStorageContracts[_simpleStorageIndex];
-        mySimpleStorage.store(_newSimpleStorageNumber);
+        listOfSimpleStorageContracts[_simpleStorageIndex].store(_newSimpleStorageNumber);
     }
 
     function sfGet(uint _simpleStorageIndex) public view returns(uint256) {
-        SimpleStorage mySimpleStorage = listOfSimpleStorageContracts[_simpleStorageIndex];
-        return mySimpleStorage.retreive();
+        return listOfSimpleStorageContracts[_simpleStorageIndex].retreive();
+
     }
 }
