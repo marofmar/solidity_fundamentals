@@ -2,38 +2,55 @@
 
 pragma solidity ^0.8.30;
 
-import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import {PriceConverter} from "./PriceConverter.sol";
 
 
 contract FundMe {
+    using PriceConverter for uint256;
 
     uint256 public minimumUsd = 5 * 1e18; 
 
+    address[] public funders;
+    mapping(address funder =>uint256 amountFunded) public addressToAmountFunded;
+
+    address public owner;
+    constructor() {
+        owner = msg.sender;
+    }
+
     function fund() public payable{
-        require(getConversionRate(msg.value) >= minimumUsd, "didn't send enough ETH");  // 1e18 = 1ETH = 1* 10^18 
-    }
-
-
-
-    //function withdraw() public {}
-
-    function getPrice() public view returns(uint256) {
-        // address 0x694AA1769357215DE4FAC081bf1f309aDC325306 (ETH/USD)
-        // ABI
-        AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
-        (, int256 price, , , ) = priceFeed.latestRoundData();
-        // Price of ETH in terms of USD
-        // 5000.00000000
-        return uint256(price * 1e10);
-
-    }
-    function getConversionRate(uint256 ethAmount) public view returns(uint256) {
-        uint256 ethPrice = getPrice();
-        uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1e18; // multiply first
-        return ethAmountInUsd;
-    }
-
-    function getVersion() public view returns (uint256) {
         
+        require(msg.value.getConversionRate()>= minimumUsd, "didn't send enough ETH");  // 1e18 = 1ETH = 1* 10^18 
+        funders.push(msg.sender);
+        addressToAmountFunded[msg.sender] += msg.value;
     }
+
+    function withdraw() public onlyOwner{
+        // mapping addressToAmiountFunded[funder] = amountFunded
+        for (uint256 funderIndex = 0; funderIndex<funders.length; funderIndex++) {
+            address funder = funders[funderIndex];
+            addressToAmountFunded[funder] = 0;
+        }
+
+        // reset array
+        funders = new address[](0);
+
+        // //transfer
+        // payable(msg.sender).transfer(address(this).balance);
+
+        // //send
+        // bool sendSuccess = payable(msg.sender).send(address(this).balance);
+        // require(sendSuccess, "Send failed");
+
+        //call
+        (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");
+        require(callSuccess, "call failed");
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Sender is not owner!");
+        _;
+    }
+
+
 }
